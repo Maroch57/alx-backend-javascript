@@ -1,27 +1,45 @@
-/* eslint-disable no-param-reassign */
-export default function updateUniqueItems(map) {
-  if (map instanceof Map) {
-    for (const [key, value] of map) {
-      if (value === 1) {
-        map.set(key, 100);
-      }
-    }
+// Create a function named updateUniqueItems that returns an updated
+// map for all items with initial quantity at 1.
 
-    return map;
+// It should accept a map as an argument. The map it accepts for argument
+// is similar to the map you create in the previous task.
+
+// For each entry of the map where the quantity is 1, update the quantity to 100.
+// If updating the quantity is not possible (argument is not a map)
+// the error Cannot process should be thrown.
+
+const updateUniqueItems = (items) => {
+  if (!(items instanceof Map)) {
+    throw new Error('Cannot process');
   }
-
-  throw new Error('Cannot process');
-}/* eslint-disable no-param-reassign */
-export default function updateUniqueItems(map) {
-  if (map instanceof Map) {
-    for (const [key, value] of map) {
-      if (value === 1) {
-        map.set(key, 100);
-      }
+  for (const [k, v] of items.entries()) {
+    if (v === 1) {
+      items.set(k, 100);
     }
-
-    return map;
   }
+  return items;
+};
 
-  throw new Error('Cannot process');
-}
+export default updateUniqueItems;// Create a function named updateUniqueItems that returns an updated
+// map for all items with initial quantity at 1.
+
+// It should accept a map as an argument. The map it accepts for argument
+// is similar to the map you create in the previous task.
+
+// For each entry of the map where the quantity is 1, update the quantity to 100.
+// If updating the quantity is not possible (argument is not a map)
+// the error Cannot process should be thrown.
+
+const updateUniqueItems = (items) => {
+  if (!(items instanceof Map)) {
+    throw new Error('Cannot process');
+  }
+  for (const [k, v] of items.entries()) {
+    if (v === 1) {
+      items.set(k, 100);
+    }
+  }
+  return items;
+};
+
+export default updateUniqueItems;
