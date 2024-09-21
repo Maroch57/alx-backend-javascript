@@ -1,44 +1,26 @@
-import fs from 'fs';
+const fs = require('fs');
 
-/**
- * Reads the data of students in a CSV data file.
- */
-const readDatabase = (dataPath) => new Promise((resolve, reject) => {
-  if (!dataPath) {
-    reject(new Error('Cannot load the database'));
-  }
-  if (dataPath) {
-    fs.readFile(dataPath, (err, data) => {
-      if (err) {
-        reject(new Error('Cannot load the database'));
-      }
-      if (data) {
-        const fileLines = data
-          .toString('utf-8')
-          .trim()
-          .split('\n');
-        const studentGroups = {};
-        const dbFieldNames = fileLines[0].split(',');
-        const studentPropNames = dbFieldNames
-          .slice(0, dbFieldNames.length - 1);
+export default function readDatabase(path) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, (err, data) => {
+      if (err) { reject(Error('Cannot load the database')); } else {
+        const db = data.toString().split('\n');
+        db.shift();
+        const field = {};
 
-        for (const line of fileLines.slice(1)) {
-          const studentRecord = line.split(',');
-          const studentPropValues = studentRecord
-            .slice(0, studentRecord.length - 1);
-          const field = studentRecord[studentRecord.length - 1];
-          if (!Object.keys(studentGroups).includes(field)) {
-            studentGroups[field] = [];
+        for (const elem of db) {
+          if (elem !== '') {
+            const key = elem.split(',').pop();
+            const name = elem.split(',')[0];
+            if (Object.prototype.hasOwnProperty.call(field, key)) {
+              field[key].push(name);
+            } else {
+              field[key] = [name];
+            }
           }
-          const studentEntries = studentPropNames
-            .map((propName, idx) => [propName, studentPropValues[idx]]);
-          studentGroups[field].push(Object.fromEntries(studentEntries));
         }
-        resolve(studentGroups);
+        resolve(field);
       }
     });
-  }
-});
-
-export default readDatabase;
-module.exports = readDatabase;
+  });
+}
